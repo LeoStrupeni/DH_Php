@@ -7,8 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="formulario.php">Volver al Formulario</a>
-    <br>
     <h1>Usuario Registrado</h1>
+    <br>
+    <a href="listadoUsuarios.php">Ir a Listado Usuarios</a>
+    <br>
+    <a href="formulario.php">Volver al Formulario</a>
 </body>
 </html>

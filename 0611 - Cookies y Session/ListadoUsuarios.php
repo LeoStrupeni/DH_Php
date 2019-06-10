@@ -13,6 +13,7 @@
     <br> 
 </body>
 </html>
+
 <?php
 
 echo "<h1><u>Listado Usuarios</u></h1>";
@@ -22,8 +23,10 @@ $deco1  = json_decode($base,true);
 
 var_dump($deco1);
 $var = 0;
+
+
 foreach($deco1 as $usuarios) {
-    Echo "<a href='perfil.php?id=".$var."'>".$usuarios["nombre"]."</a><br>";
+    Echo "<a style='text-transform:uppercase;' href='perfil.php?id=".$var."'>".$usuarios["nombre"]."</a><br>";
     $var ++;
 }
 
