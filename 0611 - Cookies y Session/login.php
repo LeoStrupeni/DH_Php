@@ -17,20 +17,35 @@
                 if ($recursion == 0 && $valor["email"] == $_POST["email"]) {
                     $recursion ++;
                     if (password_verify($_POST["password"],$valor["password"])){
+                        if ($_POST["Recordar"]=="recuerdo") {
+                            setcookie("email",$_POST["email"],time()+60);
+                            setcookie("password",$_POST["password"],time()+60);
+                        }
                         session_start();
                         $_SESSION["login"]= "Usuario logueado: ".$valor["email"];
                         $_SESSION["id"]=$valor['id'];
                         $_SESSION["nombre"]=$valor['nombre'];
                         $_SESSION["email"]=$valor['email'];
-                        $_SESSION["password"]=$valor["password"];
+                        $_SESSION["password"]=$valor["password"];    
                         header('location: perfil.php?id='.$valor['id']);
                     } else {
                         $contraseña = "Contraseña Incorrecta";
                     }
+                }else {
+                    $contraseña = "Mail no Registrado"."<br><a href='formulario.php' style='text-decoration:none; color:black'>Resgistrate!!!</a>";
+                    
                 };
             };
         };
+    };
+
+    $emailTemporal ="";
+    $contraseñaTemporal="";
+    if (isset($_COOKIE["email"])){
+        $emailTemporal = $_COOKIE["email"];
+        $contraseñaTemporal=$_COOKIE["password"];
     }
+
 ?>
 
 
@@ -65,20 +80,26 @@
 <body>
     <div>
         <form action="login.php" method="POST" class="centrado">
-            <b>Formulario de Logueo</b>
+            <b style="text-align:center">Formulario de Logueo</b>
             <p>
                 <label for="email"></label>
-                <input type="email" name="email" placeholder="Ingrese Email" required> 
+                <input type="email" name="email" placeholder="Ingrese Email" value='<?=$emailTemporal?>' required> 
                 <br>
             </p>
             <p>
                 <label for="password"></label>
-                <input type="password" name="password" placeholder="Ingrese contraseña" required>
+                <input type="password" name="password" placeholder="Ingrese contraseña" value='<?=$contraseñaTemporal?>' required>
                 <br> 
             </p>
+            <p>
+                <input type="checkbox" name="Recordar" value="recuerdo" checked>Recordame
+                <br>
+            </p>
+
+
             <button type="submit" name="enviar" class="boton-Log">Login</button> 
             <br><br>
-            <?php if ($_POST) {echo $contraseña;}?>
+            <p style="text-align:center"><?php if ($_POST) {echo $contraseña;}?></p>
 
         </form>    
     </div>

@@ -2,6 +2,23 @@
     session_start();
     $usuario = "No hay ningun usuario Logueado";
     if (isset($_SESSION["login"])) {$usuario = $_SESSION["login"];}
+
+    if($_POST) {
+        if($_FILES) {
+            if($_FILES["foto"]["error"] != 0) {
+                echo "Hubo un error en la carga. Error numero: ".$_FILES["foto"]["error"]."<br>";
+            } else {
+                $ext = pathinfo($_FILES["foto"]["name"],PATHINFO_EXTENSION);
+                if ($ext != "jpg" && $ext != "jpeg" && $ext != "png") {
+                    echo "La extension de la imagen ".$ext." no se puede cargar. Solo puede carga jpg, jpeg o png.";
+                } else {
+                    move_uploaded_file ($_FILES["foto"]["tmp_name"],"imgPerfiles/Foto_Perfil_id_".$_POST["id"].".jpg");
+                };
+            };
+        };
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -17,11 +34,20 @@
     <br>
     <a href="listadoUsuarios.php">Ir a Listado Usuarios</a>
     <br>
+    <br>
+    
+    <button style="margin-left: 260px; padding: 10px">
+        <a href="logout.php" style="text-decoration:none; color:black">Cerrar Sesión</a>
+    </button>
+
     <h1><u>Perfil Usuario</u></h1>
     <?="<h2 style='Color:red'>".$usuario."</h2>"?>
 
-    <form action="formulario.php" method="POST" enctype="multipart/form-data">
+
+
+    <form action="perfil.php?id=<?=$_SESSION["id"]?>" method="POST" enctype="multipart/form-data">
         <p>
+            <?="<img src='imgperfiles/Foto_Perfil_id_".$_SESSION["id"].".jpg' alt='img'><br>"?>
             <label for="id">ID Usuario:</label>
             <input type="text" name="id" value="<?=$_SESSION["id"]?>" readonly style="text-align: right; width: 280px"> 
             <br>
@@ -31,11 +57,6 @@
             <label for="nombre">Nombre:</label>
             <input type="text" name="nombre" value="<?=$_SESSION["nombre"]?>" style="width: 299px"> 
             <br>
-        </p>
-
-        <p>
-            Birthday:
-            <input type="date" name="bday" max="1950-12-31" min="2002-01-01" style="width: 296px">
         </p>
 
         <p>
@@ -49,16 +70,16 @@
             <br>
         </p>
         <p>
-            <label for="foto">Foto perfil</label><br>
-            <?="<img src='imgperfiles/Foto_Perfil_id_".$_SESSION["id"].".jpg' alt='img'><br>"?>
+            <label for="foto">Actualizar Foto:</label><br>
             <input type="file" name="foto">
             <br> 
         </p>
         <p>
-            <br>
-            <input type="submit" value="Actualizar">
+            <input type="submit" value="Actualizar" style="margin-left: 270px; padding: 10px">
         </p>
     </form>
+
+
 
 </body>
 </html>
