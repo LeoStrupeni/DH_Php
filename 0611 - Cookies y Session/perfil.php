@@ -10,24 +10,28 @@
     <a href="formulario.php">Volver al Formulario</a>
     <br>
     <a href="listadoUsuarios.php">Ir a Listado Usuarios</a>
-    
-
+    <br>
+    <h1><u>Perfil Usuario</u></h1>
 </body>
 </html>
 
 <?php
 
-    echo "<h1><u>"."Perfil Usuario id</u>: ".$_GET["id"] ."</h1>";
-    echo "<h3><u>Foto de Perfil</u>:</h3>";
-    echo "<img src='imgperfiles/Foto_Perfil_id_".$_GET["id"].".jpg' alt='img'>";
-
-
     $archivo="usuarios.json";
     $base   = file_get_contents($archivo);
     $deco1  = json_decode($base,true);
 
+    if(is_null($deco1)){
+        echo "No hay Usuarios en la Base de Datos";
+    } else {
+
+    echo "<h3><u>"."Usuario id</u>: ".$deco1[$_GET["id"]]["id"]."</h3>";
+    echo "<h3><u>Foto de Perfil</u>:</h3>";
+    echo "<img src='imgperfiles/Foto_Perfil_id_".$deco1[$_GET["id"]]["id"].".jpg' alt='img'>";
     echo "<h3><u>Nombre</u>: <em>".$deco1[$_GET["id"]]["nombre"]."</em></h3>";
     echo "<h3><u>Email</u>: <em>".$deco1[$_GET["id"]]["email"]."</em></h3>";
     echo "<h3><u>Contraseña</u>: <em>".$deco1[$_GET["id"]]["password"]."</em></h3>";
+    
+    }
 
 ?>

@@ -21,13 +21,15 @@ $archivo="usuarios.json";
 $base   = file_get_contents($archivo);
 $deco1  = json_decode($base,true);
 
-var_dump($deco1);
 $var = 0;
 
-
-foreach($deco1 as $usuarios) {
-    Echo "<a style='text-transform:uppercase;' href='perfil.php?id=".$var."'>".$usuarios["nombre"]."</a><br>";
-    $var ++;
+if(is_null($deco1)){
+    echo "No hay Usuarios en la Base de Datos";
+} else {
+    foreach($deco1 as $usuarios) {
+        Echo $usuarios["id"]." - "."<a style='text-transform:uppercase;' href='perfil.php?id=".$var."'>".$usuarios["nombre"]."</a><br>";
+        $var ++;
+    }
 }
 
 ?>

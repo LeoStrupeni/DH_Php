@@ -35,12 +35,11 @@
         };
 
         if ($varOK) {
-            $claveHash=$_POST["password"]=password_hash($_POST["password"],PASSWORD_DEFAULT);
+            $claveHash=($_POST["password"]=password_hash($_POST["password"],PASSWORD_DEFAULT));
             $deco1[]= $_POST;
             $enco1  = json_encode($deco1);
             file_put_contents($archivo,$enco1);
 
-            $idArchivo = count($deco1)-1;
             if($_FILES) {
                 if($_FILES["foto"]["error"] != 0) {
                     echo "Hubo un error en la carga. Error numero: ".$_FILES["foto"]["error"]."<br>";
@@ -49,7 +48,7 @@
                     if ($ext != "jpg" && $ext != "jpeg" && $ext != "png") {
                         echo "La extension de la imagen ".$ext." no se puede cargar. Solo puede carga jpg, jpeg o png.";
                     } else {
-                        move_uploaded_file ($_FILES["foto"]["tmp_name"],"imgPerfiles/Foto_Perfil_id_".$idArchivo.".jpg");
+                        move_uploaded_file ($_FILES["foto"]["tmp_name"],"imgPerfiles/Foto_Perfil_id_".$_POST["id"].".jpg");
                     };
                 };
             };
@@ -68,9 +67,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registro</title>
+    <style>
+        *{
+            font-family: sans-serif
+        }
+
+    </style>
+
 </head>
 <body>
+    
+    <?php
+        $archivo="usuarios.json";
+        $base   = file_get_contents($archivo);
+        $deco1  = json_decode($base,true);
+        $id = (is_null($deco1)) ? 0 : count($deco1) ; //IF TERNARIO
+    ?>
+
     <form action="formulario.php" method="POST" enctype="multipart/form-data">
+        <?php
+            echo '<input type="hidden" id="id" name="id" value="'.$id.'">';
+        ?>
         <p>
             <label for="nombre">Nombre:</label>
             <input type="text" name="nombre"> 
@@ -91,13 +108,14 @@
             <br> 
         </p>
         <p>
-            <label for="foto">Cargue una foto para su perfil</label><br>
+            <label for="foto">Cargue una foto para su perfil</label><br><br>
             <input type="file" name="foto">
             <br> 
         </p>
         <p>
             <input type="submit">
         </p>
+        <a href="login.php">Login</a><br>
         <a href="perfil.php?id=0">Ir a Perfiles</a><br>
         <a href="listadoUsuarios.php">Ir a Listado Usuarios</a>
     </form>
