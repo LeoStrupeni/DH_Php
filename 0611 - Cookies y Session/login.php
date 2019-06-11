@@ -17,7 +17,12 @@
                 if ($recursion == 0 && $valor["email"] == $_POST["email"]) {
                     $recursion ++;
                     if (password_verify($_POST["password"],$valor["password"])){
-                        var_dump($deco1);
+                        session_start();
+                        $_SESSION["login"]= "Usuario logueado: ".$valor["email"];
+                        $_SESSION["id"]=$valor['id'];
+                        $_SESSION["nombre"]=$valor['nombre'];
+                        $_SESSION["email"]=$valor['email'];
+                        $_SESSION["password"]=$valor["password"];
                         header('location: perfil.php?id='.$valor['id']);
                     } else {
                         $contraseña = "Contraseña Incorrecta";
@@ -26,7 +31,6 @@
             };
         };
     }
-
 ?>
 
 
